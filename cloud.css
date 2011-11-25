@@ -1,0 +1,18 @@
+
+
+ol, ul, li {margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;}
+ol, ul {list-style: none;}
+body {line-height: 1; background: #eee;font-family: Helvetica, Arial, sans-serif;}
+table {border-collapse: collapse;border-spacing: 0;}
+#footer {font-size: 13px;color: #aaa;text-align: center;text-shadow: 0px 1px 1px #fff;border-top: 1px dotted #ddd;}
+#footer a {color: #0af;text-decoration: none;}
+
+#wordcloud {position: relative;display:block;margin:auto;width: 800px;height: 600px;color: #09f;border: none;border: 1px dotted #bada55;float:left;}
+#wordcloud a {color: inherit;text-decoration: none;}
+#wordcloud a:hover {color: #0df;}
+#wordcloud li {padding: 0;display: inline;text-shadow: 0px 1px 1px #ccc;}
+
+#wordKey {font-size: 0.6em;margin: 30px auto;width: 200px;border: none;border: 1px dotted #bada55;float:left;clear:none;}
+#wordKey li {background-color: #09f;color: white;text-shadow: 0px 1px 1px #ccc;float:none;clear:both;display: block;}
+
+
