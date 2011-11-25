@@ -1,7 +1,7 @@
 /*
 * dylanCloud Plugin for jQuery
 *
-* Version 0.1.A
+* Version 0.1.1
 *
 * Copyright 2011, Adam Hall
 * Licensed under the MIT license.
