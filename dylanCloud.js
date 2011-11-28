@@ -1,7 +1,7 @@
 /*
 * dylanCloud Plugin for jQuery
 *
-* Version 0.1.1
+* Version 0.1.A
 *
 * Copyright 2011, Adam Hall
 * Licensed under the MIT license.
@@ -63,7 +63,12 @@
             var allSelectors = [];
             
             for (var i = 0; i < word_array.length; i++) {
-              var mySelector = "li:contains('" + word_array[i].text+ "')";
+              var mySelector = "li.dylanCloud" + encodeURI(word_array[i].text);  //This bit is nasty.
+                                                                            //We can't have this
+                                                                            //because sometimes
+                                                                            //the word may be
+                                                                            //partially found in
+                                                                            //another word
               allSelectors.push(mySelector);
               word_array[i].weight = parseFloat(word_array[i].weight, 10);
               word_array[i].element = $this.find(mySelector);
@@ -98,7 +103,7 @@
         
         //Does the word already exist? If not create it            
         if (!(word.element && word.element[0])) {
-           word.element = $('<li>');//.addClass(random_class).attr('title', word.title || word.text || '');
+           word.element = $('<li>').attr("class","dylanCloud" + encodeURI(word.text));//.attr('title', word.title || word.text || '');
           // Append link if word.url attribute was set
           if (!!word.url) {
             inner_html = $('<a>').attr('href', encodeURI(word.url).replace(/'/g, "%27")).text(word.text);
@@ -114,7 +119,7 @@
           $this.append(word.element);
         }
         //word.element.css("opacity",word.scaledOpacity);
-        word.element.attr('class','w' + word.scaledWeight);
+        //word.element.addClass('w' + word.scaledWeight);
         
         word.element.data("opacity",word.scaledOpacity);
         updateWordPlacement(word, index, nextCall);
@@ -131,10 +136,13 @@
             //angle = 6.28 * Math.random(),
             //radius = 0.0,
             startOpacity = word.element.css("opacity");
-     
+      if(!index == 0) {
         if(word.element[0].offsetLeft !== 0) {
+         
             startLeft = word.element[0].offsetLeft;
             startTop = word.element[0].offsetTop;
+          
+        }
         }
         if(word.element.css("fontSize") !== 0 && word.element.css("fontSize") !== options.weightFont[0] + options.weightFontType) {
             startFontSize = word.element.css("fontSize");
@@ -243,8 +251,8 @@
                 ).click(
                   function(e){
                     autoChange = false;
-                    $("#wordcloud li").css({"opacity": 0.2});
-                    $("#wordcloud li." + $(this).attr("class")).css("opacity", 1);
+                    $("#wordcloud li").animate({"opacity": 0.2},{ queue: false, duration:options.keyFaderSpeed  });
+                    $("#wordcloud li." + $(this).attr("class")).animate({"opacity": 1},{ queue: false, duration:options.keyFaderSpeed  });
                   }
                 );
               
