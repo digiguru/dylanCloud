@@ -1,7 +1,7 @@
 /*
 * dylanCloud Plugin for jQuery
 *
-* Version 0.1.A
+* Version 1.0.1.0
 *
 * Copyright 2011, Adam Hall
 * Licensed under the MIT license.
@@ -18,7 +18,7 @@
     var $this = this,   
         defaults = {
           animationSpeed: 250,    //How fast the words move when they change size
-          keyFaderSpeed: 50,      //How fast the words fade in on the key
+          keyFaderSpeed: 100,      //How fast the words fade in on the key
           width: $this.width(),   //width of the wordcloud
           height: $this.height(), //height of the word cloud
           center: {               //Position from where words are drawn
@@ -61,19 +61,30 @@
           prepareWords = function() {
           //This will be a list of all the valid selectors on the stage
             var allSelectors = [];
-            
+            var tmpArray = [];
             for (var i = 0; i < word_array.length; i++) {
-              var mySelector = "li.dylanCloud" + encodeURI(word_array[i].text);  //This bit is nasty.
-                                                                            //We can't have this
-                                                                            //because sometimes
-                                                                            //the word may be
-                                                                            //partially found in
-                                                                            //another word
-              allSelectors.push(mySelector);
-              word_array[i].weight = parseFloat(word_array[i].weight, 10);
-              word_array[i].element = $this.find(mySelector);
+                //Need to check if this never duplicates another word
+              //check to see if the selector already exists.
+              //If it does merge the two array items, otherwise
+              //add it to the list
+              var tmpItem = word_array[i];
+              var alreadyAdded = false;
+              for (var j = 0; j < tmpArray.length; j++) {
+                if(tmpArray[j].text === word_array[i].text) {
+                  alreadyAdded = true;
+                  tmpArray[j].weight += parseFloat(tmpItem.weight, 10)
+                }
+              }
+              if(!alreadyAdded) {
+                var mySelector = "li.dylanCloud" + encodeURI(word_array[i].text);
+                tmpItem.weight = parseFloat(tmpItem.weight, 10);
+                tmpItem.element = $this.find(mySelector);
+                tmpArray.push(word_array[i]);
+                allSelectors.push(mySelector);
+              }
+              
             }
-            
+            word_array = tmpArray;
             //Destroy all the words that no longer appear.
             $this.find(":not("+allSelectors.join(",")+")").remove();        
 
@@ -251,8 +262,9 @@
                 ).click(
                   function(e){
                     autoChange = false;
-                    $("#wordcloud li").animate({"opacity": 0.2},{ queue: false, duration:options.keyFaderSpeed  });
-                    $("#wordcloud li." + $(this).attr("class")).animate({"opacity": 1},{ queue: false, duration:options.keyFaderSpeed  });
+                    var myClass = $(this).attr("class");
+                    $("#wordcloud li:not(." + myClass + ")").animate({"opacity": 0.2},{ queue: false, duration:options.keyFaderSpeed  });
+                    $("#wordcloud li." + myClass).animate({"opacity": 1},{ queue: false, duration:options.keyFaderSpeed  });
                   }
                 );
               
