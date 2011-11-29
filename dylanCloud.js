@@ -196,7 +196,7 @@
         already_placed_words.push(word.element[0]);
         
         // Invoke callback if existing
-        if (typeof word.callback === "function") {
+        if ($.isFunction(word.callback)) {
           word.callback.call(word.element);
         }
         nextCall();
@@ -279,7 +279,7 @@
                 );
               }();
               
-          if (typeof options.callback === 'function') {
+          if ($.isFunction(options.callback)) {
             options.callback.call(this);
           }
           
@@ -294,7 +294,7 @@
         drawOneWordDelayed();
       } else {
         $.each(word_array, drawOneWord);
-        if (typeof options.callback === 'function') {
+        if ($.isFunction(options.callback)) {
           options.callback.call(this);
         }
       }
