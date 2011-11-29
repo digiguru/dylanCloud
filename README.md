@@ -9,9 +9,10 @@ Tag Clouds look awsome, but none of the best jquery plugins are animated!
 If only I could have a cloud that changes in realtime as my data changes.
 Currently you would write code like this.
 
-### js
+'''javascript
     $("#wordcloud").jqCloud(GetData());
     $("#wordcloud").jqCloud(GetData());
+'''
 
 The effect will look like this....
 
@@ -19,9 +20,10 @@ The effect will look like this....
 
 It should be like this....
 
-### js
+'''javascript
     $("#wordcloud").dylanCloud(GetData());
     $("#wordcloud").dylanCloud(GetData());
+'''
 
 [Insert animated gif of dylanCloud]
 

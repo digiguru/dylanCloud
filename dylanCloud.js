@@ -1,7 +1,7 @@
 /*
 * dylanCloud Plugin for jQuery
 *
-* Version 1.0.1.0
+* Version 1.0.1.1
 *
 * Copyright 2011, Adam Hall
 * Licensed under the MIT license.
@@ -13,7 +13,6 @@
 */
 
 (function( $ ) {
-  "use strict";
   $.fn.dylanCloud = function(word_array, options) {
     var $this = this,   
         defaults = {
