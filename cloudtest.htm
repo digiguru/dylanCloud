@@ -13,16 +13,16 @@ $(document).ready(function() {
   
   
 $("#wordcloud").dylanCloud([
- {text:"This",weight:68},
- {text:"shows",weight:30},
- {text:"how",weight:12},
- {text:"easy",weight:6},
- {text:"it",weight:36},
- {text:"can",weight:3},
- {text:"be",weight:8},
- {text:"to",weight:10},
- {text:"make",weight:12},
- {text:"clouds",weight:40}],{keySelector:"#wordKey"});
+ {Text:"This",Weight:68},
+ {Text:"shows",Weight:30},
+ {Text:"how",Weight:12},
+ {Text:"easy",Weight:6},
+ {Text:"it",Weight:36},
+ {Text:"can",Weight:3},
+ {Text:"be",Weight:8},
+ {Text:"to",Weight:10},
+ {Text:"make",Weight:12},
+ {Text:"clouds",Weight:40}],{keySelector:"#wordKey"});
 
 
 
@@ -58,7 +58,7 @@ var WorldListGenerator = {
     var word_list = [];
     //var subtract = Math.ceil(Math.random()*2);
     for(var i = 0, l = allWords.length;i< l; i++){
-       word_list.push({text: allWords[i], weight: Math.ceil(Math.random()*200)});
+       word_list.push({Text: allWords[i], Weight: Math.ceil(Math.random()*200)});
     }
     console.log(word_list);
     
