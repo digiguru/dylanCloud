@@ -54,7 +54,7 @@
       var step = 2.0,
           already_placed_words = [],
           aspect_ratio = options.width / options.height,
-          // Make sure every weight is a scaled number before sorting,
+          // Make sure every Weight is a scaled number before sorting,
           // and find any existing elements for the words.
           // Store the selectors in a list to find anything that may have dropped out the cloud
           prepareWords = function() {
@@ -69,14 +69,14 @@
               var tmpItem = word_array[i];
               var alreadyAdded = false;
               for (var j = 0; j < tmpArray.length; j++) {
-                if(tmpArray[j].text === word_array[i].text) {
+                if(tmpArray[j].Text === word_array[i].Text) {
                   alreadyAdded = true;
-                  tmpArray[j].weight += parseFloat(tmpItem.weight, 10)
+                  tmpArray[j].Weight += parseFloat(tmpItem.Weight, 10)
                 }
               }
               if(!alreadyAdded) {
-                var mySelector = "li.dylanCloud" + encodeURI(word_array[i].text);
-                tmpItem.weight = parseFloat(tmpItem.weight, 10);
+                var mySelector = "li.dylanCloud" + encodeURI(word_array[i].Text);
+                tmpItem.Weight = parseFloat(tmpItem.Weight, 10);
                 tmpItem.element = $this.find(mySelector);
                 tmpArray.push(word_array[i]);
                 allSelectors.push(mySelector);
@@ -89,10 +89,10 @@
 
           }();//auto run prepareWords.
      
-      // Sort word_array from the word with the highest weight to the one with the lowest
+      // Sort word_array from the word with the highest Weight to the one with the lowest
       word_array.sort(function(a, b) {
-          if (a.weight < b.weight) {return 1;}
-          else if (a.weight > b.weight) {return -1;}
+          if (a.Weight < b.Weight) {return 1;}
+          else if (a.Weight > b.Weight) {return -1;}
           else {return 0;}
       });
        
@@ -101,11 +101,11 @@
       var drawOneWord = function(index, word, nextCall) {
         var inner_html;
         
-        // Linearly map the original weight to a discrete scale from 1 to 10
+        // Linearly map the original Weight to a discrete scale from 1 to 10
         word.scaledWeight =
           Math.round(
-            (word.weight - word_array[word_array.length - 1].weight)
-            /(word_array[0].weight - word_array[word_array.length - 1].weight)
+            (word.Weight - word_array[word_array.length - 1].Weight)
+            /(word_array[0].Weight - word_array[word_array.length - 1].Weight)
             * (0.0 + options.weightFont.length - 1)
            ) + 1;
         word.scaledOpacity =
@@ -113,16 +113,16 @@
         
         //Does the word already exist? If not create it            
         if (!(word.element && word.element[0])) {
-           word.element = $('<li>').attr("class","dylanCloud" + encodeURI(word.text));//.attr('title', word.title || word.text || '');
-          // Append link if word.url attribute was set
-          if (!!word.url) {
-            inner_html = $('<a>').attr('href', encodeURI(word.url).replace(/'/g, "%27")).text(word.text);
+           word.element = $('<li>').attr("class","dylanCloud" + encodeURI(word.Text));//.attr('title', word.title || word.text || '');
+          // Append link if word.NavigateUrl attribute was set
+          if (!!word.NavigateUrl) {
+            inner_html = $('<a>').attr('href', encodeURI(word.NavigateUrl).replace(/'/g, "%27")).text(word.Text);
             // If nofollow: true set rel='nofollow'
             if (!!options.nofollow) {
               inner_html.attr("rel", "nofollow");
             }
           } else {
-            inner_html = word.text;
+            inner_html = word.Text;
           }
           word.element.append(inner_html);
           word.element.css("fontSize",options.weightFont[0] + options.weightFontType);
@@ -229,12 +229,12 @@
                                     .clone()
                                     .css({left:"",top:"",position:"", fontSize:word.animateFont, opacity: word.animateOpacity});
                     if(prevWeight == 0) {
-                      $key.append(myElement.html(word.weight + "+"));
+                      $key.append(myElement.html(word.Weight + "+"));
                     } else {
                       $key.append(myElement
-                        .html(word.weight + " to " + (prevWeight-1)));  
+                        .html(word.Weight + " to " + (prevWeight-1)));  
                     }
-                    prevWeight = word.weight;
+                    prevWeight = word.Weight;
                     prevScaledWeight = word.scaledWeight;
                   }
                   
