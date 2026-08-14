@@ -1,0 +1,34 @@
+{
+  "name": "dylan-cloud",
+  "version": "2.0.0",
+  "description": "A dependency-free animated word cloud for modern browsers.",
+  "type": "module",
+  "exports": {
+    ".": "./src/dylan-cloud.js",
+    "./core": "./src/core.js",
+    "./styles.css": "./src/dylan-cloud.css"
+  },
+  "files": [
+    "src",
+    "dylanCloud.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "lint": "node --check src/core.js && node --check src/dylan-cloud.js && node --check src/main.js && node --check tools/build.mjs && node --check tests/core.test.js",
+    "test": "node --test",
+    "build": "node tools/build.mjs",
+    "ci": "npm run lint && npm test && npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "word-cloud",
+    "tag-cloud",
+    "animation",
+    "javascript",
+    "css"
+  ],
+  "license": "MIT"
+}

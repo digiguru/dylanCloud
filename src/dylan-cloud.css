@@ -1,0 +1,47 @@
+.dylan-cloud {
+  --dylan-cloud-duration: 650ms;
+  container-type: inline-size;
+  isolation: isolate;
+  min-height: 24rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.dylan-cloud__word {
+  color: inherit;
+  display: inline-block;
+  font-size: var(--font-size, 1rem);
+  font-weight: 650;
+  left: 0;
+  line-height: 1;
+  opacity: 0;
+  position: absolute;
+  text-decoration: none;
+  top: 0;
+  transform: translate3d(var(--x, 50%), var(--y, 50%), 0) scale(0.82);
+  transform-origin: center;
+  transition:
+    transform var(--dylan-cloud-duration) cubic-bezier(0.2, 0.8, 0.2, 1),
+    font-size var(--dylan-cloud-duration) cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity var(--dylan-cloud-duration) ease;
+  white-space: nowrap;
+  will-change: transform, font-size, opacity;
+}
+
+.dylan-cloud__word.is-visible {
+  opacity: var(--opacity, 1);
+  transform: translate3d(var(--x, 0), var(--y, 0), 0) scale(1);
+}
+
+.dylan-cloud__word:hover,
+.dylan-cloud__word:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dylan-cloud__word {
+    transition: none;
+  }
+}
