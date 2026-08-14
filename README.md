@@ -1,103 +1,123 @@
-DylanCloud.js
-=============
+# DylanCloud
 
-An animated tag cloud for jQuery
---------------------------------
+A dependency-free animated word cloud for modern browsers.
 
-Tag Clouds look awsome, but none of the best jquery plugins are animated!
+DylanCloud started in 2011 as a jQuery plugin for animating tag-cloud changes. Version 2 keeps the original idea — weighted words that move and resize when the data changes — but removes jQuery, the overlap plugin, and the old jQuery animation pipeline.
 
-If only I could have a cloud that changes in realtime as my data changes.
-Currently you would write code like this.
+## What changed in 2.0
 
-'''javascript
-    $("#wordcloud").jqCloud(GetData());
-    $("#wordcloud").jqCloud(GetData());
-'''
+- No jQuery and no runtime dependencies.
+- Modern ES modules and DOM APIs.
+- CSS transform/opacity/font-size transitions for animation.
+- Collision-aware spiral layout.
+- Responsive relayout with `ResizeObserver`.
+- Paste ordinary text and use duplicate frequency as weight.
+- Optional explicit weights: `JavaScript:10` or `"machine learning":20`.
+- Up to 1,000 input terms per cloud by default.
+- Legacy data objects such as `{ Text, Weight, NavigateUrl }` are still accepted.
+- `prefers-reduced-motion` disables transitions automatically.
+- Node's built-in test runner, deterministic `npm ci`, CI, and a static build with zero npm dependencies.
 
-The effect will look like this....
+## Try the demo
 
-[Insert animated gif of jqCloud]
+Open `index.html` in a local static server, or run any server you prefer from the repository root.
 
-It should be like this....
+The demo lets you paste a large body of text, load a 400+ word sample, and trigger a weighted update to see the existing words animate into their new sizes and positions.
 
-'''javascript
-    $("#wordcloud").dylanCloud(GetData());
-    $("#wordcloud").dylanCloud(GetData());
-'''
+## Use as a library
 
-[Insert animated gif of dylanCloud]
+```html
+<link rel="stylesheet" href="./src/dylan-cloud.css" />
 
-Goal
-----
+<div id="cloud" style="height: 500px"></div>
 
-The goal of this project is to have a simple jquery plugin that allows animated data in a Tag Cloud.
+<script type="module">
+  import { DylanCloud } from "./src/dylan-cloud.js";
 
-Features
---------
+  const cloud = new DylanCloud(document.querySelector("#cloud"));
 
-We have alot of options to keep you happy.
+  cloud.setWords([
+    { text: "JavaScript", weight: 20 },
+    { text: "CSS", weight: 14 },
+    { text: "HTML", weight: 11 }
+  ]);
 
-animationSpeed - default 250. Allows you to set a how fast the words move when the data has changed.
-width / height - defaults to the width / height of the selected jquery element. The Dimensions for the cloud.
-center.x / center.x - defaults to the center of the selected jquery element. The Center from where the words are placed.
-weightFont - defaults to [0.1, 0.2, 0.4, 0.8, 1.2, 1.6, 2.2, 2.8, 3.6, 4.4]. The fontsize that will be applied to the different key elements in the tag cloud. There will only be a maximum of this number of keys.
-weightFontType - defaults to em. The fontSize type that will be applied. Valid values are pt, %, px and of course the best one, EM!
-hitTest - defaults to the function below. It allows you to specify a function to be called to check the hittest, but overlaps we think is the best!
-        function(elem, other_elems){return $(elem).overlaps(other_elems);}
-        
-    
-        defaults = {
-          animationSpeed: 250,    //How fast the words move when they change size
-          width: $this.width(),   //width of the wordcloud
-          height: $this.height(), //height of the word cloud
-          center: {               //Position from where words are drawn
-            x: $this.width() / 2.0,
-            y: $this.height() / 2.0
-          },
-          delayedMode: true,     //I don't think this one works actually - sorry //word_array.length > 50,
-          nofollow: false,        //Applys "Nofollow" to the links (google bot style)
-          weightFont: [0.1, 0.2, 0.4, 0.8, 1.2, 1.6, 2.2, 2.8, 3.6, 4.4],
-                                  // A list of font sizes that will recieve an even distribution from the control.
-          weightFontType: "em",    // Of course you want EM because it's the best :-|
-          //weightFont: [6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26],
-          //weightFontType: "px"
-          keySelector: null,      //Pass in a selector and jQuery will apply a key to the tagCloud
-          keyFaderSpeed: 100,      //How fast the words fade in on the key
-          hitTest: function(elem, other_elems){
-            // Overlap detection provided by "Overlaps". Feel free to write your own and pass it in!
-            return $(elem).overlaps(other_elems);
-          }
-        },
+  // Later: the existing words animate to their new layout.
+  cloud.update([
+    { text: "JavaScript", weight: 8 },
+    { text: "CSS", weight: 24 },
+    { text: "Accessibility", weight: 16 }
+  ]);
+</script>
+```
 
+The original capitalised object shape is also supported:
 
-Future Plans
-------------
+```js
+cloud.setWords([
+  { Text: "DylanCloud", Weight: 25 },
+  { Text: "GitHub", Weight: 12, NavigateUrl: "https://github.com/digiguru/dylanCloud" }
+]);
+```
 
-+ Add in settings to automatically get the data from an ajax
-+ Add in settings to automatically get data from a websocket connection
-+ Make the plugin use MVVM library like Backbone or Knockout
+## Turn pasted text into weighted words
 
-Release History
----------------
+```js
+import { parseWordText } from "./src/core.js";
 
-### Version 1.0.1.0
+const words = parseWordText(`
+  cloud cloud cloud
+  animation animation
+  JavaScript:10
+  "word cloud":18
+`);
 
-Enhancement - combines tags that use the same name, adding the weight together.
-EG
+cloud.setWords(words);
+```
 
-    {text:"Duplicate", weight:5},
-    {text:"Example", weight:20},
-    {text:"Duplicate", weight:10};
-    
-now gets interpereted as
+Plain repeated words are counted. Explicit `term:number` syntax contributes that exact weight.
 
-    {text:"Duplicate", weight:15},
-    {text:"Example", weight:20};
+## Options
 
-### Version 1.0.0.0
+```js
+new DylanCloud(element, {
+  animationDuration: 650,
+  gap: 3,
+  maxFontSize: 72,
+  maxWords: 1000,
+  minFontSize: 12,
+  padding: 18,
+  spiralStep: 3.5
+});
+```
 
-Bugfix - people should be able to use partial text for a tag, eg "More" and "or" as 2 separate tags would cause an infinate loop.
+Dense clouds are deliberately best-effort: words that cannot fit without collision are omitted from that render rather than being painted on top of one another. The `dylancloud:render` event reports `requested` and `rendered` counts.
 
-### Version 0.1.0.0
+## Events
 
-Animates the jQCloud.
+```js
+element.addEventListener("dylancloud:render", ({ detail }) => {
+  console.log(detail.requested, detail.rendered);
+});
+```
+
+## Development
+
+Requires Node.js 20 or newer.
+
+```bash
+npm ci
+npm run lint
+npm test
+npm run build
+```
+
+`npm run build` creates a dependency-free static demo in `dist/`.
+
+## Why no framework or animation package?
+
+The library does not need one. Modern browsers already provide ES modules, `ResizeObserver`, `requestAnimationFrame`, CSS transforms, and media queries for reduced motion. Keeping the runtime dependency-free makes DylanCloud easier to embed, maintain, and keep alive for another fifteen years.
+
+## License
+
+MIT. Copyright Adam Hall.
